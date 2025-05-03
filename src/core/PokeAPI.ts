@@ -1,0 +1,28 @@
+import { EvolutionChain, Pokemon, PokemonSpecies } from "../lib/defintions"
+
+const MAX_POKEMON_ID = 1000;
+const MIN_POKEMON_ID = 1;
+
+export async function fetchData<t>(url: string): Promise<t>  {
+
+    const response = await fetch(url, {method: 'GET'})
+    if (!response.ok) {
+        const errorMessage = await response.text()
+        throw new Error(errorMessage)
+    }
+
+    const json = await response.json()
+    console.log(json)
+    return json
+}
+
+export async function fetchPokemon(identifier?: number | string): Promise<Pokemon> {
+    const id = identifier ? identifier : Math.floor(Math.random() * (MAX_POKEMON_ID-MIN_POKEMON_ID) + MIN_POKEMON_ID)
+    const url = `https://pokeapi.co/api/v2/pokemon/${id}/`
+
+    return fetchData<Pokemon>(url)
+}
+
+export async function fetchSpecies(url: string): Promise<PokemonSpecies> { return fetchData<PokemonSpecies>(url) }
+
+export async function fetchEvolutionChain(url: string): Promise<EvolutionChain> { return fetchData<EvolutionChain>(url) }

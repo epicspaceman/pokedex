@@ -1,31 +1,32 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import './App.css'
-import { Pokemon } from './lib/defintions';
-
-const MAX_POKEMON_ID = 1000;
-const MIN_POKEMON_ID = 1;
+import PokemonInfoBox from './components/PokemonInfoBox/PokemonInfoBox';
+import { useHandleQuery } from './core/queryutils';
+import { fetchPokemon } from './core/PokeAPI';
 
 function App() {
-  // set pokemon
-  const [pokemon, setPokemon] = useState<Pokemon>(undefined)
+  const [pokemonId, setPokemonId] = useState<string>()
 
-  function fetchPokemon(identifier: number | string) {
-    fetch(`https://pokeapi.co/api/v2/pokemon/${identifier}/`, {method: 'GET'})
-      .then((res) => res.json())
-      .then((json) => {
-        console.log(json)
-        setPokemon(json)
-      })
+  const [isLoading, isError, error, pokemon] = useHandleQuery({
+      queryFunction: useCallback(() => fetchPokemon(pokemonId), [pokemonId])
+  })
+
+  function searchPokemon(formData: FormData) {
+    const query = formData.get('pokequery')?.toString() ?? ''
+
+    console.log(query)
+
+    setPokemonId(query)
   }
 
-  // fetch random pokemon on load
-  useEffect(() => {
-    const randomId = Math.floor(Math.random() * (MAX_POKEMON_ID-MIN_POKEMON_ID) + MIN_POKEMON_ID)
+  if (isError && error!.message !== 'Not Found') {
 
-    fetchPokemon(randomId)
-  }, [])
+    return (
+      <div>An unexpected error occurred: {error?.message}</div>
+    )
+  }
 
-  if (pokemon === undefined) {
+  if (isLoading || pokemon === undefined) {
     return (
       <div>Loading...</div>
     )
@@ -34,10 +35,14 @@ function App() {
   return (
     <>
       <div className='container'>
-        <h1>Pokedex</h1>
-        <p>Name: {pokemon.name}</p>
-        <p>Height: {pokemon.height} hectograms</p>
-        <p>Weight: {pokemon.weight} decimeters</p>
+
+        {error?.message === 'Not Found' ? <span>Could not find specified pokemon</span> : <PokemonInfoBox pokemon={pokemon} />}
+
+        <form action={searchPokemon}>
+          <h1>search</h1>
+          <input type='text' name='pokequery' id='pokequery' placeholder='ex: Pikachu or 25' required/>
+          <button type='submit'>search</button>
+        </form>
       </div>
     </>
   )
