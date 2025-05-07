@@ -1,0 +1,22 @@
+.name, .number {
+    font-size: xx-large;
+    color: white;
+}
+
+.nameline {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.typeline, .heightline, .weightline {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.types {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+}

@@ -6,5 +6,8 @@
 }
 
 .container {
-  border: red dotted 2px;
+  border-top: red solid 100px;
+  border-bottom: red solid 100px;
+  background-color: darkcyan;
+  padding: 2em;
 }

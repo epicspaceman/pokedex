@@ -1,0 +1,14 @@
+.evoline {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.chainLink {
+    text-decoration: underline;
+    cursor: grab;
+}
+
+.chainLink:hover {
+    color: white;
+}

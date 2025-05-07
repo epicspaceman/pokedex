@@ -5,7 +5,7 @@ export type Pokemon = {
     weight: number
     abilities: PokemonAbility[]
     moves: Move[]
-    types: Type[]
+    types: PokemonType[]
     species: PokemonSpecies
     sprites: PokemonSprites
 };
@@ -71,6 +71,7 @@ export type Ability = {
 
 export type PokemonType = {
     slot: number
+    type: Type
 };
 
 export type Type = {
