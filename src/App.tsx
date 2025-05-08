@@ -8,7 +8,7 @@ import search from './assets/search.svg'
 function App() {
   const [pokemonId, setPokemonId] = useState<string>()
 
-  const [isLoading, isError, error, pokemon] = useHandleQuery({
+  const {isLoading, isError, error, data} = useHandleQuery({
       queryFunction: useCallback(() => fetchPokemon(pokemonId), [pokemonId])
   })
 
@@ -20,14 +20,14 @@ function App() {
     setPokemonId(query)
   }
 
-  if (isError && error!.message !== 'Not Found') {
+  if (isError) {
 
     return (
-      <div>An unexpected error occurred: {error?.message}</div>
+      <div>An unexpected error occurred: {error.message}</div>
     )
   }
 
-  if (isLoading || pokemon === undefined) {
+  if (isLoading) {
     return (
       <div>Loading...</div>
     )
@@ -41,7 +41,7 @@ function App() {
           <button type='submit'><img src={search} /></button>
         </form>
 
-        {error?.message === 'Not Found' ? <span>Could not find specified pokemon</span> : <PokemonInfoBox pokemon={pokemon} setPokemonId={setPokemonId}/>}
+        <PokemonInfoBox pokemon={data} />
       </div>
     </>
   )

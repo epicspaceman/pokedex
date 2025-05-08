@@ -2,21 +2,21 @@ import { Pokemon, PokemonType} from "../../lib/defintions";
 import { fetchSpecies } from "../../core/PokeAPI";
 import { useHandleQuery } from "../../core/queryutils";
 import PokemonEvolutions from "../PokemonEvolutions/PokemonEvolutions";
-import { Dispatch, SetStateAction, useCallback } from "react";
+import { useCallback } from "react";
 import './PokemonInfoBox.css'
 
-function PokemonInfoBox({ pokemon, setPokemonId }: { pokemon: Pokemon, setPokemonId: Dispatch<SetStateAction<string | undefined>> }) {    
-    const [isLoading, isError, error, species] = useHandleQuery({
+function PokemonInfoBox({ pokemon }: { pokemon: Pokemon }) {    
+    const {isLoading, isError, error, data} = useHandleQuery({
         queryFunction: useCallback(() => fetchSpecies(pokemon.species.url), [pokemon])
     })
 
-    if (isError && error != undefined) {
+    if (isError) {
         return (
             <div>Error: {error.message}</div>
         )
     }
 
-    if (isLoading || species === undefined) {
+    if (isLoading) {
         return (
             <div>Loading...</div>
         )
@@ -46,7 +46,7 @@ function PokemonInfoBox({ pokemon, setPokemonId }: { pokemon: Pokemon, setPokemo
                     <p className="height">{pokemon.weight} hectograms</p>
                 </div>
 
-                <PokemonEvolutions species={species} setPokemonId={setPokemonId}/>
+                <PokemonEvolutions species={data} />
             </div>
         </>
     )

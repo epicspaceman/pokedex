@@ -1,3 +1,37 @@
+interface BaseQueryResult<DataType> {
+    isLoading: boolean
+    isError: boolean
+    isSuccess: boolean
+    error: Error | null
+    data: DataType | undefined
+}
+
+interface SuccessQueryResult<DataType> extends BaseQueryResult<DataType> {
+    isLoading: false
+    isError: false
+    isSuccess: true
+    error: null
+    data: DataType
+}
+
+interface LoadingQueryResult<DataType> extends BaseQueryResult<DataType> {
+    isLoading: true
+    isError: false
+    isSuccess: false
+    error: null
+    data: undefined
+}
+
+interface ErrorQueryResult<DataType> extends BaseQueryResult<DataType> {
+    isLoading: false
+    isError: true
+    isSuccess: false
+    error: Error
+    data: undefined
+}
+
+export type QueryResult<DataType> = SuccessQueryResult<DataType> | LoadingQueryResult<DataType> | ErrorQueryResult<DataType>
+
 export type Pokemon = {
     id: number
     name: string
