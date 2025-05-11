@@ -1,0 +1,34 @@
+.searchBar, .searchBar::selection {
+    border-radius: 25px;
+    border: rgba(15, 97, 129, 1) solid .15em;
+    background-color: rgba(15, 97, 129, .5);
+    padding: .5em;
+    color: rgba(255, 255, 255, 0.8);
+    width: 25%;
+}
+
+.searchButton {
+    background: none;
+    border: none;
+    cursor: grab;
+}
+
+.searchContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    padding-top: .5em;
+    border-bottom: rgba(15, 97, 129, 1) solid .15em;
+    height: 10%;
+}
+
+.searchBarContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.searchLabel {
+    color: rgba(0, 0, 0, .75);
+    text-align: left;
+    font-size: .75em;
+}

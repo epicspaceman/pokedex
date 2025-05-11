@@ -1,3 +1,4 @@
+// useHandleQuery Interfaces + Type
 interface BaseQueryResult<DataType> {
     isLoading: boolean
     isError: boolean
@@ -32,6 +33,7 @@ interface ErrorQueryResult<DataType> extends BaseQueryResult<DataType> {
 
 export type QueryResult<DataType> = SuccessQueryResult<DataType> | LoadingQueryResult<DataType> | ErrorQueryResult<DataType>
 
+// PokeAPI types
 export type Pokemon = {
     id: number
     name: string
@@ -66,6 +68,17 @@ export type PokemonSpecies = {
     shape: PokemonShape
     evolves_from_species: PokemonSpecies
     evolution_chain: EvolutionChain
+    flavor_text_entries: FlavorText[]
+}
+
+export type FlavorText = {
+    flavor_text: string
+    language: Language
+}
+
+export type Language = {
+    id: number
+    name: string
 }
 
 export type EvolutionChain = {
@@ -109,9 +122,9 @@ export type PokemonType = {
 };
 
 export type Type = {
-    id: number
+    id?: number
     name: string
-    move_damage_class: MoveDamageClass
+    move_damage_class?: MoveDamageClass
 }
 
 export type Move = {

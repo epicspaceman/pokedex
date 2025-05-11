@@ -16,6 +16,7 @@ export async function fetchData<t>(url: string): Promise<t | Response>  {
 }
 
 export async function fetchPokemon(identifier?: number | string): Promise<Pokemon | Response> {
+    // when given no identifier, generate a random id between the maximum and minimum pokemon ids
     const id = identifier ? identifier : Math.floor(Math.random() * (MAX_POKEMON_ID-MIN_POKEMON_ID) + MIN_POKEMON_ID)
     const url = `https://pokeapi.co/api/v2/pokemon/${id}/`
 
