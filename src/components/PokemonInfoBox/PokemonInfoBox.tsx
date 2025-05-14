@@ -7,11 +7,25 @@ import './PokemonInfoBox.css'
 import { TYPE_COLORS } from "../../core/PokemonTypeColors";
 
 function filterFlavorTexts(flavorTexts: FlavorText[]): string {
-    return flavorTexts.find((flavorText: FlavorText) => flavorText.language.name === 'en')?.flavor_text ?? ''
+    const text = flavorTexts.find((flavorText: FlavorText) => flavorText.language.name === 'en')?.flavor_text ?? ''
+    return text.replace('\f', ' ')
 }
 
 function capitalize(str: string): string {
     return str.slice(0, 1).toUpperCase() + str.slice(1)
+}
+
+const DECIMETERS_TO_INCHES = 3.937
+const HECTOGRAMS_TO_POUNDS =  1 / 4.536
+
+function decimetersToImperial(decimeters: number): string {
+    const inches = decimeters * DECIMETERS_TO_INCHES
+
+    return Math.round(inches / 12) + '\'' + (inches % 12).toLocaleString('en-US', {minimumIntegerDigits: 2, maximumFractionDigits: 0}) + '"'
+}
+
+function hectogramsToImperial(hectograms: number): string {
+    return (hectograms * HECTOGRAMS_TO_POUNDS).toLocaleString('en-US', {maximumFractionDigits: 2}) + ' lbs'
 }
 
 function PokemonInfoBox({ pokemon }: { pokemon: Pokemon }) {    
@@ -52,11 +66,11 @@ function PokemonInfoBox({ pokemon }: { pokemon: Pokemon }) {
 
                     <div className="heightline">
                         <p className="height">HEIGHT</p>
-                        <p className="height">{pokemon.height} decimeters</p>
+                        <p className="height">{decimetersToImperial(pokemon.height)}</p>
                     </div>
                     <div className="weightline">
                         <p className="height">WEIGHT</p>
-                        <p className="height">{pokemon.weight} hectograms</p>
+                        <p className="height">{hectogramsToImperial(pokemon.weight)}</p>
                     </div>
 
                     <PokemonEvolutions species={data} />
