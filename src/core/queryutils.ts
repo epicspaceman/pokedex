@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { QueryResult } from "../lib/defintions"
 
-export function useHandleQuery<t>({ queryFunction }: { queryFunction: () => Promise<t | Response> }): QueryResult<t> {
+export function useHandleQuery<t>({ queryFunction, queryKeys }: { queryFunction: () => Promise<t | Response>, queryKeys: string[] }): QueryResult<t> {
     const [queryResult, setQueryResult] = useState<QueryResult<t>>({
         isLoading: true,
         isError: false,
@@ -9,6 +9,8 @@ export function useHandleQuery<t>({ queryFunction }: { queryFunction: () => Prom
         error: null,
         data: undefined,
     })
+
+    const queryKey = queryKeys.toString()
 
     function handleError(e: Error | string | any) {
         let error = new Error("Unexpected Error")
@@ -28,9 +30,28 @@ export function useHandleQuery<t>({ queryFunction }: { queryFunction: () => Prom
         })
     }
 
-    useEffect(() => {
+    async function storeData(data: t) {
+        try {
+            sessionStorage.setItem(queryKey, JSON.stringify(data))
+        } catch {
+            sessionStorage.clear()
+            storeData(data)
+        }
+    }
+
+    function handleQueryFunction() {
         queryFunction().then((res: t | Response) => {
-            if (res instanceof Response) {
+            const storedData = sessionStorage.getItem(queryKey)
+
+            if (storedData !== null) {
+                setQueryResult({
+                        isLoading: false,
+                        isError: false,
+                        isSuccess: true,
+                        error: null,
+                        data: JSON.parse(storedData),
+                    })
+            } else if (res instanceof Response) {
                 handleResponseObject(res).then((json) => {
                     setQueryResult({
                         isLoading: false,
@@ -39,6 +60,8 @@ export function useHandleQuery<t>({ queryFunction }: { queryFunction: () => Prom
                         error: null,
                         data: json,
                     })
+
+                    storeData(json)
                 }).catch((e) => {
                     handleError(e)
                 })
@@ -50,12 +73,19 @@ export function useHandleQuery<t>({ queryFunction }: { queryFunction: () => Prom
                     error: null,
                     data: res,
                 })
+
+                storeData(res)
             } else {
                 throw new Error("Data Undefined")
             }
         }).catch((e) => {
             handleError(e)
         })
+    }
+
+    useEffect(() => {
+        handleQueryFunction()
+        
     }, [queryFunction])
 
     return queryResult

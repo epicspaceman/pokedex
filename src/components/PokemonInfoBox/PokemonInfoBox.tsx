@@ -5,6 +5,7 @@ import PokemonEvolutions from "../PokemonEvolutions/PokemonEvolutions";
 import { useCallback } from "react";
 import './PokemonInfoBox.css'
 import { TYPE_COLORS } from "../../core/PokemonTypeColors";
+import PokemonSprite from "../PokemonSprite/PokemonSprite";
 
 function filterFlavorTexts(flavorTexts: FlavorText[]): string {
     const text = flavorTexts.find((flavorText: FlavorText) => flavorText.language.name === 'en')?.flavor_text ?? ''
@@ -30,7 +31,8 @@ function hectogramsToImperial(hectograms: number): string {
 
 function PokemonInfoBox({ pokemon }: { pokemon: Pokemon }) {    
     const {isLoading, isError, error, data} = useHandleQuery({
-        queryFunction: useCallback(() => fetchSpecies(pokemon.species.url), [pokemon])
+        queryFunction: useCallback(() => fetchSpecies(pokemon.species.url), [pokemon]),
+        queryKeys: [pokemon.name, 'species']
     })
 
     if (isError) {
@@ -49,7 +51,8 @@ function PokemonInfoBox({ pokemon }: { pokemon: Pokemon }) {
         <div className="pokeInfoContainer">
             <div className="pokeDataContainer">
                 <div>
-                    <img src={pokemon.sprites.front_default} alt={data.name} className="pokemonImg"/>
+                    <PokemonSprite identifier={pokemon.id.toString()} height={'15rem'}/>
+                    <PokemonEvolutions species={data} />
                 </div>
                 <div className="stats">
                     <div className="nameline">
@@ -72,8 +75,6 @@ function PokemonInfoBox({ pokemon }: { pokemon: Pokemon }) {
                         <p className="height">WEIGHT</p>
                         <p className="height">{hectogramsToImperial(pokemon.weight)}</p>
                     </div>
-
-                    <PokemonEvolutions species={data} />
                 </div>
             </div>
 

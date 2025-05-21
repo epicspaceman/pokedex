@@ -2,19 +2,20 @@ import { useCallback } from "react"
 import PokemonInfoBox from "../PokemonInfoBox/PokemonInfoBox"
 import { useHandleQuery } from "../../core/queryutils"
 import { fetchPokemon } from "../../core/PokeAPI"
-import PokemonSearchBar from "../PokemonSearchBar/PokemonSearchBar"
 import "./PokemonDisplay.css"
+import Navbar from "../Navbar/Navbar"
 
 function PokemonDisplay({ identifier }: { identifier: string | undefined}) {    
     const {isLoading, isError, error, data} = useHandleQuery({
-        queryFunction: useCallback(() => fetchPokemon(identifier), [identifier])
+        queryFunction: useCallback(() => fetchPokemon(identifier), [identifier]),
+        queryKeys: [identifier ?? 'random']
     })
 
     if (isError) {
         if (error.message === 'Not Found') {
             return (
                 <div className="container">
-                    <PokemonSearchBar />
+                    <Navbar />
 
                     <p>Could not find '{identifier}'</p>
                 </div>
@@ -36,7 +37,7 @@ function PokemonDisplay({ identifier }: { identifier: string | undefined}) {
         <>
         <div className='container'>
             <div className="content">
-                <PokemonSearchBar />
+                <Navbar />
                 <PokemonInfoBox pokemon={data} />
             </div>
         </div>

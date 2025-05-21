@@ -5,10 +5,12 @@ import { ChainLink, PokemonSpecies } from "../../lib/defintions"
 import './PokemonEvolutions.css'
 import arrowRight from '../../assets/arrow-right.svg'
 import { NavLink } from "react-router"
+import PokemonSprite from "../PokemonSprite/PokemonSprite"
 
 function PokemonEvolutions({ species }: { species: PokemonSpecies }) {
     const {isLoading, isError, error, data} = useHandleQuery({
-        queryFunction: useCallback(() => fetchEvolutionChain(species.evolution_chain.url), [species])
+        queryFunction: useCallback(() => fetchEvolutionChain(species.evolution_chain.url), [species]),
+        queryKeys: [species.name, 'evolution_chain']
     })
 
     function displayEvolutions(evolves_to: ChainLink[]) {
@@ -19,7 +21,9 @@ function PokemonEvolutions({ species }: { species: PokemonSpecies }) {
                     {evolves_to.map((chainLink: ChainLink, idx: number): ReactElement => {
                             return (
                                 <div className="linkSection" key={idx}>
-                                    <NavLink key={idx} to={`/pokemon/${chainLink.species.name}`} className="chainLink">{chainLink.species.name}</NavLink>
+                                    <NavLink key={idx} to={`/pokemon/${chainLink.species.name}`} className="chainLink">
+                                        <PokemonSprite identifier={chainLink.species.name} />
+                                    </NavLink>
                                     {chainLink.evolves_to.length > 0 && displayEvolutions(chainLink.evolves_to)}
                                 </div>
                             )
@@ -44,7 +48,9 @@ function PokemonEvolutions({ species }: { species: PokemonSpecies }) {
 
     return (
         <div className="evoline">
-            <NavLink className="chainLink" to={`/pokemon/${data.chain.species.name}`}>{data.chain.species.name}</NavLink>
+            <NavLink className="chainLink" to={`/pokemon/${data.chain.species.name}`}>
+                <PokemonSprite identifier={data.chain.species.name} />
+            </NavLink>
             {data.chain.evolves_to.length > 0 && displayEvolutions(data.chain.evolves_to)}
         </div>
     )

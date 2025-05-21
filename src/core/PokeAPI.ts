@@ -4,14 +4,14 @@ const MAX_POKEMON_ID = 1000;
 const MIN_POKEMON_ID = 1;
 
 export async function fetchData<t>(url: string): Promise<t | Response>  {
-
     const response = await fetch(url, {method: 'GET'})
     if (!response.ok) {
         return response
     }
 
     const json = await response.json()
-    console.log(json)
+
+    // console.log(json)
     return json
 }
 

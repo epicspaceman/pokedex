@@ -1,11 +1,18 @@
+import { useNavigate } from 'react-router';
 import './App.css'
-import Pokemon from './Pokemon';
+import { useEffect } from 'react';
+import generateRandomPokemonId from './core/RandomPokemonId';
 
 function App() {
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    navigate(`/pokemon/${generateRandomPokemonId()}`)
+  }, [])
 
   return (
     <>
-      <Pokemon />
+      An Unexpected Error Occurred. Try reloading the page.
     </>
   )
 }
