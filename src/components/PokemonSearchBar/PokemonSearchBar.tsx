@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router"
-import searchIcon from '../../assets/search.svg'
+import searchIcon from '/search.svg?url'
 import './PokemonSearchBar.css'
 
 function PokemonSearchBar() {

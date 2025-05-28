@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router"
 import PokemonSearchBar from "../PokemonSearchBar/PokemonSearchBar"
 import generateRandomPokemonId from "../../core/RandomPokemonId"
+import './Navbar.css'
 
 function Navbar() {
     const navigate = useNavigate()
@@ -10,10 +11,10 @@ function Navbar() {
     }
 
     return (
-        <>
+        <div className="navbar">
             <PokemonSearchBar />
-            <button onClick={() => redirectToRandomPokemon()}>Random Pokemon</button>
-        </>
+            <button className="randomPokemonButton" onClick={() => redirectToRandomPokemon()}>Random Pokemon</button>
+        </div>
     )
 }
 

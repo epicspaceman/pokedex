@@ -50,7 +50,7 @@ function PokemonInfoBox({ pokemon }: { pokemon: Pokemon }) {
     return (
         <div className="pokeInfoContainer">
             <div className="pokeDataContainer">
-                <div>
+                <div className="sprites">
                     <PokemonSprite identifier={pokemon.id.toString()} height={'15rem'}/>
                     <PokemonEvolutions species={data} />
                 </div>
