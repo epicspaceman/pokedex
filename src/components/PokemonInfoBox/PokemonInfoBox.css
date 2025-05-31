@@ -36,8 +36,8 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    /* padding-left: 6em;
-    padding-right: 6em; */
+    padding-left: 3em;
+    padding-right: 3em;
     height: 50%;
     align-items: center;
 }
@@ -47,6 +47,11 @@
     border-top: white solid .1em;
     background: #9c9c9c;
     background: linear-gradient(0deg, rgba(156, 156, 156, 1) 0%, rgba(232, 232, 232, 1) 99%);
+    background-repeat: repeat-x;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     display: flex;
     align-items: center;
     text-align: left;
@@ -55,11 +60,12 @@
 }
 
 .stats {
-    width: 50%;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    width: 30%;
+    max-width: 520px;
 }
 
 .sprites {
@@ -69,4 +75,14 @@
 
 .pokeInfoContainer {
     height: 100%;
+    width: 100%;
+    max-width: 1028px;
+    justify-self: center;
+    border: red dotted 2px;
+}
+
+@media (max-width: 720px) {
+    .pokeDataContainer {
+        flex-direction: column;
+    }
 }
